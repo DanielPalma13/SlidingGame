@@ -1,0 +1,123 @@
+<!--DANIEL PALMA 03-28-2019 FIXED NOT YET STARTED BUT CAN MOVE NUMBERS -->
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Slide Puzzle</title>
+ </head>
+ <body>
+   <script>
+     var counter = 1
+	 document.writeln("<table style='border: 1px solid black;'>");
+     for(i = 1; i <= 16; i++){
+	   if(counter == 1)
+	     document.writeln("<tr>");
+	   if(i > 9)
+	     document.writeln("<td><input id='" + i + "' type='button' value='" + i + "' style='padding: 30px 30px 30px 30px; align: center; width: 100px; height: 100px' /></td>");
+	   else
+	     document.writeln("<td><input id='" + i + "' type='button' value='" + i + "' style='padding: 30px 35px 30px 30px; align: center; width: 100px; height: 100px' /></td>");
+	   if(counter == 4){   
+	     document.writeln("</tr>");
+	     counter = 0;
+	   }
+	   counter++;
+	 }
+	 document.getElementById("16").value = "";
+	 document.body.style.font = "italic bold 20px Courier, monospace";
+	 document.writeln("</table>");
+   </script>
+   <p>Timer :</p>
+   <p id="time">0</p>
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+   <hr/>
+   <input type="button" value="START" onClick="startButton();">
+   <input type="button" value="RESET" onClick="resetButton();">
+   <script>
+	 var timer = 0
+	 var showTime;
+	 var btimed = false;
+	 var started = false;
+	 function startButton(){
+	   started = true;
+   	   var numbers = [];
+	   for (x = 1; x <= 15;x++ ){
+         numbers[x] = x;
+	   }
+	   if(!btimed){
+	     showTime = setInterval(moveTime, 1000);
+		 btimed = true;
+	   }
+	   for(i = 1; i <= 15; i++) {
+		 var random = Math.floor((Math.random() * 15) + 1);
+		   if (numbers[random] != ""){
+		     document.getElementById(i).value = numbers[random];
+			 numbers[random] = "";
+		   }
+		   else{
+			   for(y = 1; y <= 15; y++) {
+				 if(numbers[y] != ""){
+		           document.getElementById(i).value = numbers[y];
+				   numbers[y] = "";
+				   y = 15;
+				 }
+			   }
+		   }
+	   }
+	 }
+     function moveTime() {
+	   document.getElementById("time").innerHTML = ++timer;
+	 }
+	 function resetButton() {
+	   timer = 0;
+	   btimed = false;
+	   started = false;
+	   document.getElementById("time").innerHTML = timer;
+	   clearInterval(showTime);
+	   for (x = 1; x <= 15;x++ ){
+         document.getElementById(x).value = x;
+	   }
+	   document.getElementById(16).value = ""
+	 }
+	 function checkPattern() {
+	   var score = 0;
+	   for(z = 1; z <= 15; z++){
+	     if(document.getElementById(z).value == z && started) {
+		   score++;
+	     }
+		 if(score == 15)
+	       window.alert("I can't believe it! You won in..." + timer + " seconds.");
+	   }
+	 }
+	 function move(from, to) {
+		 if(document.getElementById(to).value == "" && started){
+	       document.getElementById(to).value = document.getElementById(from).value;
+		   document.getElementById(from).value = "";
+		   checkPattern();
+	   }
+	 }
+	 document.getElementById(1).addEventListener("click", function(){ move(1, 2); move(1, 5);});
+	 document.getElementById(2).addEventListener("click", function(){ move(2, 1); move(2, 6);  move(2, 3);});
+	 document.getElementById(3).addEventListener("click", function(){ move(3, 2); move(3, 7);  move(3, 4);});
+	 document.getElementById(4).addEventListener("click", function(){ move(4, 3); move(4, 8);});
+	 document.getElementById(5).addEventListener("click", function(){ move(5, 1); move(5, 6); move(5, 9);});
+	 document.getElementById(6).addEventListener("click", function(){ move(6, 5); move(6, 2); move(6, 7); move(6, 10);});
+	 document.getElementById(7).addEventListener("click", function(){ move(7, 6); move(7, 3); move(7, 8); move(7, 11);});
+	 document.getElementById(8).addEventListener("click", function(){ move(8, 7); move(8, 4); move(8, 12);});
+	 document.getElementById(9).addEventListener("click", function(){ move(9, 5); move(9, 10); move(9, 13);});
+	 document.getElementById(10).addEventListener("click", function(){ move(10, 9); move(10, 6); move(10, 11); move(10, 14);});
+	 document.getElementById(11).addEventListener("click", function(){ move(11, 12); move(11, 7); move(11, 10); move(11, 15);});
+	 document.getElementById(12).addEventListener("click", function(){ move(12, 11); move(12, 16); move(12, 8);});
+	 document.getElementById(13).addEventListener("click", function(){ move(13, 9); move(13, 14);});
+	 document.getElementById(14).addEventListener("click", function(){ move(14, 13); move(14, 10); move(14, 15);});
+	 document.getElementById(15).addEventListener("click", function(){ move(15, 14); move(15, 11); move(15, 16);});
+	 document.getElementById(16).addEventListener("click", function(){ move(16, 15); move(16, 12);});
+   </script>
+ </body>
+</html>
